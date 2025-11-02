@@ -2,7 +2,7 @@ import torch
 import time
 
 # Two large matrices
-size = 10000
+size = 30000
 A_cpu = torch.randn(size, size)
 B_cpu = torch.randn(size, size)
 
