@@ -2,7 +2,7 @@ import torch
 import time
 
 # Two large matrices
-size = 100000
+size = 10000
 A_cpu = torch.randn(size, size)
 B_cpu = torch.randn(size, size)
 
@@ -11,7 +11,7 @@ print(f"Multiplying two {size}x{size} matrices on CPU...")
 print(f"\nCPU:")
 start = time.time()
 C_cpu = A_cpu @ B_cpu
-cpu_tim = time.time() - start
+cpu_time = time.time() - start
 print(f" Time: {cpu_time:.4f} seconds")
 print(f"Result shape: {C_cpu.shape}")
 
