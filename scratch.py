@@ -1,14 +1,32 @@
 import torch
+import time
 
-# Check how many GPUs you have
-print(f"Number of GPUs: {torch.cuda.device_count()}")
+# Two large matrices
+size = 100000
+A_cpu = torch.randn(size, size)
+B_cpu = torch.randn(size, size)
 
-# Check current default GPU
-print(f"Current device: {torch.cuda.current_device()}")  # Usually 0
+# CPU Matrix Multiplication
+print(f"Multiplying two {size}x{size} matrices on CPU...")
+print(f"\nCPU:")
+start = time.time()
+C_cpu = A_cpu @ B_cpu
+cpu_tim = time.time() - start
+print(f" Time: {cpu_time:.4f} seconds")
+print(f"Result shape: {C_cpu.shape}")
 
-# Get device name
-print(f"Device 0: {torch.cuda.get_device_name(0)}")
-if torch.cuda.device_count() > 1:
-    for i in range(1, torch.cuda.device_count()):
-        print(f"Device {i}: {torch.cuda.get_device_name(i)}")
-        
+# GPU Matrix Multiplication
+print(f"\nGPU:")
+A_gpu = A_cpu.cuda()
+B_gpu = B_cpu.cuda()
+torch.cuda.synchronize()
+
+start = time.time()
+C_gpu = A_gpu @ B_gpu
+torch.cuda.synchronize()
+gpu_time = time.time() - start
+print(f" Time: {gpu_time:.4f} seconds")
+print(f"Result shape: {C_gpu.shape}")
+
+print(f"GPU is {cpu_time / gpu_time:.2f}x faster than CPU")
+print(f"   (Results match: {torch.allclose(C_cpu, C_gpu.cpu())})")
